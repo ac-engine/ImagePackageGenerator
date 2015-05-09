@@ -54,6 +54,15 @@ namespace ImagePackageGenerator
 
 			if (doc == null) return false;
 
+			var depth = doc.GetDepth();
+			if(depth > 8)
+			{
+				System.Windows.Forms.MessageBox.Show("8bit画像のみサポートしています。\npsdファイルのチャンネルを確認するようお願いします。");
+				doc.Release();
+				doc = null;
+				return false;
+			}
+
 			for (int i = 0; i < doc.GetLayerCount(); i++ )
 			{
 				layers.Add(new Layer(doc.GetLayer(i)));

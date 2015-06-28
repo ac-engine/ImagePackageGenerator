@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 #include <string>
-
+#include <string.h>
 
 namespace PSDParser
 {

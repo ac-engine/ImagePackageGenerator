@@ -12,6 +12,7 @@ extern "C" {
 #define PSD_C_VERSION_STRING "0.1.0.0"
 
 #include <stddef.h> /* size_t */
+#include <limits.h> /* INT_MAX */
 
 #ifdef PSD_PLATFORM_WIN32
 #include <windows.h>

@@ -31,6 +31,14 @@ namespace ImagePackageGenerator
 		public byte A;
 	}
 
+	enum ErrorCode
+	{
+		Succeed,
+		FileIsNotFound,
+		DepthIs16,
+		FailedToParse,
+	}
+
 	class PSD
 	{
 		swig.Document doc;
@@ -39,11 +47,11 @@ namespace ImagePackageGenerator
 
 		public ICollection<Layer> Layers { get { return layers; } }
 
-		public unsafe bool Load(string path)
+		public unsafe ErrorCode Load(string path)
 		{
 			Reset();
 
-			if (!System.IO.File.Exists(path)) return false;
+			if (!System.IO.File.Exists(path)) return ErrorCode.FileIsNotFound;
 
 			var buf = System.IO.File.ReadAllBytes(path);
 
@@ -52,15 +60,14 @@ namespace ImagePackageGenerator
 				doc = swig.Document.Create((IntPtr)p, buf.Count());
 			}
 
-			if (doc == null) return false;
+			if (doc == null) return ErrorCode.FailedToParse;
 
 			var depth = doc.GetDepth();
 			if(depth > 8)
 			{
-				System.Windows.Forms.MessageBox.Show("8bit画像のみサポートしています。\npsdファイルのチャンネルを確認するようお願いします。");
 				doc.Release();
 				doc = null;
-				return false;
+				return ErrorCode.DepthIs16;
 			}
 
 			for (int i = 0; i < doc.GetLayerCount(); i++ )
@@ -68,7 +75,7 @@ namespace ImagePackageGenerator
 				layers.Add(new Layer(doc.GetLayer(i)));
 			}
 
-			return true;
+			return ErrorCode.Succeed;
 		}
 
 		public void Terminate()

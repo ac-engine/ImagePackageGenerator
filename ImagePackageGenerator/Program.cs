@@ -16,6 +16,7 @@ namespace ImagePackageGenerator
 		[STAThread]
 		static void Main(string[] args)
 		{
+			/*
 			Application application = new Application();
 			application.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(application_DispatcherUnhandledException);
 
@@ -23,6 +24,9 @@ namespace ImagePackageGenerator
 			window.Show();
 
 			application.Run();
+			*/
+
+			System.Windows.Forms.Application.Run(new Window());
 		}
 
 		static void application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

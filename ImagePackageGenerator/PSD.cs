@@ -162,15 +162,16 @@ namespace ImagePackageGenerator
 				{
 					byte* dst = (byte*)p_;
 					byte* src = (byte*)layer.GetData();
+					var srtideLength = layer.GetSrtideLength();
 
 					for(int y = 0; y < Rect.Height; y++)
 					{
 						for (int x = 0; x < Rect.Width; x++)
 						{
-							dst[(x + y * Rect.Width) * 4 + 0] = src[x * 4 + y * layer.GetSrtideLength() + 0];
-							dst[(x + y * Rect.Width) * 4 + 1] = src[x * 4 + y * layer.GetSrtideLength() + 1];
-							dst[(x + y * Rect.Width) * 4 + 2] = src[x * 4 + y * layer.GetSrtideLength() + 2];
-							dst[(x + y * Rect.Width) * 4 + 3] = src[x * 4 + y * layer.GetSrtideLength() + 3];
+							dst[(x + y * Rect.Width) * 4 + 0] = src[x * 4 + y * srtideLength + 0];
+							dst[(x + y * Rect.Width) * 4 + 1] = src[x * 4 + y * srtideLength + 1];
+							dst[(x + y * Rect.Width) * 4 + 2] = src[x * 4 + y * srtideLength + 2];
+							dst[(x + y * Rect.Width) * 4 + 3] = src[x * 4 + y * srtideLength + 3];
 						}
 					}
 				}

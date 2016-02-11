@@ -1545,8 +1545,12 @@ psdLayerExtract(psd_layer_t *layer)
     channel_data_length = psdSizeGetImageLength(&size, psdHeaderGetDepth(header));
     pixel_step = psdUtilMinUnsigned(psdHeaderGetDepth(header), 8) / 8;
     psdBufferDataDestroy(&layer->pixel_data);
-    layer->pixel_data = pixel_data = psd_calloc(channel_data_length * num_channels * sizeof(psd_uint32_t), sizeof(*layer->pixel_data));
-    for (i = 0; i < num_channels; i++) {
+    
+	/* í‚É‰æ‘f‚ð32bit‚Æ‚µ‚Äˆµ‚Á‚Ä‚¢‚½‚½‚ß */
+	//layer->pixel_data = pixel_data = psd_calloc(channel_data_length * num_channels * sizeof(psd_uint32_t), sizeof(*layer->pixel_data));
+	layer->pixel_data = pixel_data = psd_calloc(channel_data_length * sizeof(psd_uint32_t), sizeof(*layer->pixel_data));
+
+	for (i = 0; i < num_channels; i++) {
         channel = layer->channels[i];
         if (psd_is_null(channel) || psd_is_null(channel->data_ptr)) {
             return PSD_STATUS_ERROR_NULL_LAYER_CHANNEL;

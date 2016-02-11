@@ -80,6 +80,11 @@ namespace ImagePackageGenerator
 
 		public void Terminate()
 		{
+			foreach (var layer in layers)
+			{
+				layer.Dispose();
+			}
+
 			layers.Clear();
 
 			if(doc != null)
@@ -129,6 +134,11 @@ namespace ImagePackageGenerator
 
 		void Reset()
 		{
+			foreach(var layer in layers)
+			{
+				layer.Dispose();
+			}
+
 			layers.Clear();
 
 			if (doc != null)
@@ -136,9 +146,16 @@ namespace ImagePackageGenerator
 				doc.Release();
 			}
 			doc = null;
+
+			// 画像を完全に破棄する。
+			System.GC.Collect();
+			System.GC.Collect();
+			System.GC.WaitForFullGCComplete();
+			System.GC.Collect();
+			System.GC.Collect();
 		}
 
-		public class Layer
+		public class Layer : IDisposable
 		{
 			swig.Layer layer;
 
@@ -175,6 +192,11 @@ namespace ImagePackageGenerator
 						}
 					}
 				}
+			}
+
+			public void Dispose()
+			{
+				Pixels = null;
 			}
 
 			public string Name { get; private set; }

@@ -33,6 +33,10 @@ namespace ImagePackageGenerator
 
 		public void Load(string path)
 		{
+			foreach(var layer in Layers)
+			{
+				layer.Dispose();
+			}
 			Layers.Clear();
 
 			var ec = psd.Load(path);
@@ -54,7 +58,7 @@ namespace ImagePackageGenerator
 			}
 		}
 
-		public class Layer
+		public class Layer : IDisposable
 		{ 
 			PSD.Layer layer;
 
@@ -100,6 +104,15 @@ namespace ImagePackageGenerator
 			public Rect Rect { get; private set; }
 
 			public System.Drawing.Bitmap Image { get; private set; }
+
+			public void Dispose()
+			{
+				if(Image != null)
+				{
+					Image.Dispose();
+				}
+				Image = null;
+			}
 
 			public override string ToString()
 			{

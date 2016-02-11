@@ -15,6 +15,13 @@ namespace ImagePackageGenerator
 		public Window()
 		{
 			InitializeComponent();
+			if (Environment.OSVersion.Platform == PlatformID.Unix)
+			{
+				// MacのPlatformIDはなぜかUnix
+				// TODO: Linux
+				Font = new Font( "Hiragino Kaku Gothic Pro", 11 );
+				menuStrip.Font = new Font( "Hiragino Kaku Gothic Pro", 11 );
+			}
 		}
 
 		WindowContext context = null;

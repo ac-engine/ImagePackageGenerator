@@ -52,31 +52,6 @@ namespace PSDParser
 		return static_cast<int32_t>(dst.size()) - 1;
 	}
 
-	ReferenceObject::ReferenceObject()
-	{
-	}
-
-	ReferenceObject::~ReferenceObject()
-	{
-	}
-
-	int32_t ReferenceObject::AddRef()
-	{
-		reference++;
-		return reference;
-	}
-
-	int32_t ReferenceObject::Release()
-	{
-		reference--;
-		if (reference == 0)
-		{
-			delete this;
-			return 0;
-		}
-		return reference;
-	}
-
 	Layer::Layer(Document* doc, psd_layer_t* layer)
 		: doc(doc)
 		, layer(layer)

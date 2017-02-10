@@ -65,7 +65,7 @@ namespace ImagePackageGenerator
 			var depth = doc.GetDepth();
 			if(depth > 8)
 			{
-				doc.Release();
+				doc.Dispose();
 				doc = null;
 				return ErrorCode.DepthIs16;
 			}
@@ -89,7 +89,7 @@ namespace ImagePackageGenerator
 
 			if(doc != null)
 			{
-				doc.Release();
+				doc.Dispose();
 			}
 			doc = null;
 		}
@@ -143,7 +143,7 @@ namespace ImagePackageGenerator
 
 			if (doc != null)
 			{
-				doc.Release();
+				doc.Dispose();
 			}
 			doc = null;
 

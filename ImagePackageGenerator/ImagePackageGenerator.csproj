@@ -60,7 +60,6 @@
     <Compile Include="swig\PSDParser.cs" />
     <Compile Include="swig\PSDParserPINVOKE.cs" />
     <Compile Include="swig\Rect.cs" />
-    <Compile Include="swig\ReferenceObject.cs" />
     <Compile Include="Window.cs">
       <SubType>Form</SubType>
     </Compile>

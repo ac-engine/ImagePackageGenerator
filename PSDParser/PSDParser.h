@@ -1,40 +1,12 @@
 
 #pragma once
 
-#include "psd/psd.h"
+#include "PSDParser.Base.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <memory>
-#include <vector>
-#include <string>
-#include <string.h>
+#include "psd/psd.h"
 
 namespace PSDParser
 {
-	template <class T>
-	void SafeAddRef(T& t)
-	{
-		if (t != NULL)
-		{
-			t->AddRef();
-		}
-	}
-
-	template <class T>
-	void SafeRelease(T& t)
-	{
-		if (t != NULL)
-		{
-			t->Release();
-			t = NULL;
-		}
-	}
-
-	class Document;
-	class Layer;
-
 	struct Rect
 	{
 		int32_t Top;
@@ -43,26 +15,8 @@ namespace PSDParser
 		int32_t Right;
 	};
 
-#if _WIN32
-	typedef wchar_t uchar;
-#else
-	typedef char16_t uchar;
-#endif
-
-	class ReferenceObject
-	{
-	private:
-		int32_t	reference = 1;
-	
-	public:
-		ReferenceObject();
-		virtual ~ReferenceObject();
-		int32_t AddRef();
-		int32_t Release();
-	};
-
 	class Layer
-		: public ReferenceObject
+		: public std::enable_shared_from_this<Layer>
 	{
 		friend class Document;
 
@@ -72,13 +26,15 @@ namespace PSDParser
 
 		std::basic_string<uchar>	name;
 
+	public:
+
+#if !SWIG
 		Layer(Document* doc, psd_layer_t* layer);
 
 		Layer(Document* doc, psd_document_t* docment);
+#endif
 
 		virtual ~Layer();
-
-	public:
 
 		const void* GetData()
 		{
@@ -126,7 +82,7 @@ namespace PSDParser
 	};
 
 	class Document
-		: public ReferenceObject
+		: public std::enable_shared_from_this<Document>
 	{
 	private:
 
@@ -152,113 +108,30 @@ namespace PSDParser
 		psd_document_t*	document = nullptr;
 		psd_buffer_t*	buffer = nullptr;
 
-		Layers*			layersNative = nullptr;
+		std::shared_ptr<Layers>		layersNative = nullptr;
 		psd_rsize_t		layerCount = 0;
 
-		std::vector<Layer*>	layers;
+		std::vector<std::shared_ptr<Layer>>	layers;
 
-		Layer*				backgroundLayer = nullptr;
-
-		Document()
-		{
-
-		}
-
-		virtual ~Document()
-		{
-			SafeRelease(backgroundLayer);
-
-			for (size_t i = 0; i < layers.size(); i++)
-			{
-				SafeRelease(layers[i]);
-			}
-			layers.clear();
-
-			if (layersNative != nullptr)
-			{
-				delete layersNative;
-			}
-			layersNative = nullptr;
-
-			layerCount = 0;
-
-			if (document != nullptr)
-			{
-				psdDocumentDestroy(document);
-			}
-			document = nullptr;
-
-			if (buffer != nullptr)
-			{
-				psdBufferDestroy(buffer);
-			}
-			buffer = nullptr;
-		}
-
-		bool Load(void* data, int32_t size)
-		{
-			data_.resize(size);
-			memcpy(data_.data(), data, size);
-
-			buffer = psdBufferCreate((uint8_t*) data_.data(), size);
-			document = psdDocumentCreate();
-			psdDocumentParse(document, buffer);
-			psdDocumentExtractImage(document);
-
-			layersNative = new Layers(psdDocumentGetAllLayers(document, &layerCount));
-
-			layers.resize(layerCount);
-
-			return true;
-		}
+		std::shared_ptr<Layer>		backgroundLayer = nullptr;
 
 	public:
 
-		static Document* Create(void* data, int32_t size)
-		{
-			auto doc = new Document();
+		Document();
 
-			if (doc->Load(data, size))
-			{
-				return doc;
-			}
-			
-			doc->Release();
+		virtual ~Document();
 
-			return nullptr;
-		}
+#if !SWIG
+		bool Load(const void* data, int32_t size);
+#endif
 
-		int32_t GetLayerCount() 
-		{ 
-			if (layerCount == 0) return 1;
+		static std::shared_ptr<Document> Create(const void* data, int32_t size);
 
-			return layerCount;
-		}
+		int32_t GetLayerCount();
 
-		Layer* GetLayer(int32_t index)
-		{
-			if (layerCount == 0 && index == 0)
-			{
-				if (backgroundLayer == nullptr)
-				{
-					backgroundLayer = new Layer(this, document);
-				}
+		std::shared_ptr<Layer> GetLayer(int32_t index);
 
-				return backgroundLayer;
-			}
-
-			if (index < 0) return nullptr;
-			if (index >= GetLayerCount()) return nullptr;
-
-			if (layers[index] == nullptr)
-			{
-				layers[index] = new Layer(this, layersNative->GetPointer()[index]);
-			}
-
-			return layers[index];
-		}
-
-		size_t GetDepth() { return psdHeaderGetDepth(psdDocumentGetHeader(document)); }
+		size_t GetDepth();
 
 	};
 }

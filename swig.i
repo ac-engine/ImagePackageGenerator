@@ -8,6 +8,7 @@
 // csharp
 //-----------------------------------------------------------------------------------
 %include "stdint.i"
+%include "std_shared_ptr.i"
 %include "arrays_csharp.i"
 
 namespace PSDParser {
@@ -34,6 +35,9 @@ public class"
 %typemap(csout) void * { return $imcall; }
 %typemap(csvarin) void * { set { $imcall; } }
 %typemap(csvarout) void * { get { return $imcall; } } 
+
+%shared_ptr(PSDParser::Layer)
+%shared_ptr(PSDParser::Document)
 
 %include "PSDParser/PSDParser.h"
 

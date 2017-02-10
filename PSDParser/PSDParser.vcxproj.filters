@@ -17,6 +17,7 @@
     <ClCompile Include="PSDParser.cpp" />
     <ClCompile Include="BitmapWriter.cpp" />
     <ClCompile Include="dll.cxx" />
+    <ClCompile Include="PSDParser.Document.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="psd">
@@ -38,5 +39,6 @@
     </ClInclude>
     <ClInclude Include="PSDParser.h" />
     <ClInclude Include="BitmapWriter.h" />
+    <ClInclude Include="PSDParser.Base.h" />
   </ItemGroup>
 </Project>

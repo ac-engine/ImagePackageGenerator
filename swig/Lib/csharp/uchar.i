@@ -27,11 +27,7 @@
 
 namespace PSDParser
 {
-#ifdef _WIN32
-typedef wchar_t uchar;
-#else 
 typedef char16_t uchar;
-#endif
 };
 
 typedef void * (SWIGSTDCALL* SWIG_CSharpWStringHelperCallback)(const ::PSDParser::uchar *);

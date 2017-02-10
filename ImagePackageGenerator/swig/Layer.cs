@@ -40,6 +40,14 @@ unsafe partial class Layer : global::System.IDisposable {
     }
   }
 
+  public Layer() : this(PSDParserPINVOKE.new_Layer(), true) {
+  }
+
+  public void Extend(Rect newArea) {
+    PSDParserPINVOKE.Layer_Extend(swigCPtr, Rect.getCPtr(newArea));
+    if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public System.IntPtr GetData() { return PSDParserPINVOKE.Layer_GetData(swigCPtr); }
 
   public Rect GetRect() {
@@ -54,7 +62,28 @@ unsafe partial class Layer : global::System.IDisposable {
     return ret;
   }
 
-  public Layer() : this(PSDParserPINVOKE.new_Layer(), true) {
+  public LayerObjectType ObjectType {
+    set {
+      PSDParserPINVOKE.Layer_ObjectType_set(swigCPtr, (int)value);
+      if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      LayerObjectType ret = (LayerObjectType)PSDParserPINVOKE.Layer_ObjectType_get(swigCPtr);
+      if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public LayerAdditionalObjectType AdditionalObjectType {
+    set {
+      PSDParserPINVOKE.Layer_AdditionalObjectType_set(swigCPtr, (int)value);
+      if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      LayerAdditionalObjectType ret = (LayerAdditionalObjectType)PSDParserPINVOKE.Layer_AdditionalObjectType_get(swigCPtr);
+      if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
   }
 
 }

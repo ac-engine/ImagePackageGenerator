@@ -57,6 +57,8 @@
     <Compile Include="PSD.cs" />
     <Compile Include="swig\Document.cs" />
     <Compile Include="swig\Layer.cs" />
+    <Compile Include="swig\LayerAdditionalObjectType.cs" />
+    <Compile Include="swig\LayerObjectType.cs" />
     <Compile Include="swig\PSDParser.cs" />
     <Compile Include="swig\PSDParserPINVOKE.cs" />
     <Compile Include="swig\Rect.cs" />

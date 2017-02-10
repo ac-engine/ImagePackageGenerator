@@ -7,6 +7,20 @@
 
 namespace PSDParser
 {
+	enum class LayerObjectType
+	{
+		Image,
+		Button,
+	};
+
+	enum class LayerAdditionalObjectType
+	{
+		None,
+		Normal,
+		Pressed,
+		Hovered,
+	};
+
 	struct Rect
 	{
 		int32_t Top;
@@ -40,6 +54,49 @@ namespace PSDParser
 		Layer() {}
 		virtual ~Layer() {}
 
+		void Extend(Rect newArea)
+		{
+			if (area.Bottom == newArea.Bottom &&
+				area.Top == newArea.Top &&
+				area.Left == newArea.Left &&
+				area.Right == newArea.Right) return;
+
+			auto width = area.Right - area.Left;
+			auto height = area.Bottom - area.Top;
+
+			auto nwidth = newArea.Right - newArea.Left;
+			auto nheight = newArea.Bottom - newArea.Top;
+
+			std::vector<uint8_t> ndata;
+			ndata.resize(nwidth * nheight * 4);
+			memset(ndata.data(), 0, ndata.size());
+			
+			for (int32_t y = newArea.Top; y < newArea.Bottom; y++)
+			{
+				if (y < area.Top) continue;
+				if (y >= area.Bottom) continue;
+
+				for (int32_t x = newArea.Left; x < newArea.Right; x++)
+				{
+					if (x < area.Left) continue;
+					if (x >= area.Right) continue;
+
+					auto dx = x - newArea.Left;
+					auto dy = y - newArea.Top;
+					auto sx = x - area.Left;
+					auto sy = y - area.Top;
+
+					ndata[(dx + nwidth * dy) * 4 + 0] = data[(sx + width * sy) * 4 + 0];
+					ndata[(dx + nwidth * dy) * 4 + 1] = data[(sx + width * sy) * 4 + 1];
+					ndata[(dx + nwidth * dy) * 4 + 2] = data[(sx + width * sy) * 4 + 2];
+					ndata[(dx + nwidth * dy) * 4 + 3] = data[(sx + width * sy) * 4 + 3];
+				}
+			}
+
+			area = newArea;
+			data = ndata;
+		}
+
 		const void* GetData()
 		{
 			return data.data();
@@ -51,6 +108,10 @@ namespace PSDParser
 		}
 
 		const uchar* GetName() const { return name.c_str(); }
+
+		LayerObjectType	ObjectType = LayerObjectType::Image;
+
+		LayerAdditionalObjectType AdditionalObjectType = LayerAdditionalObjectType::None;
 	};
 
 	class Document

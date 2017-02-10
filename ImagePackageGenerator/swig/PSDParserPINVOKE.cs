@@ -240,8 +240,14 @@ public class PSDParserPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_delete_Rect")]
   public static extern void delete_Rect(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_new_Layer")]
+  public static extern global::System.IntPtr new_Layer();
+
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_delete_Layer")]
   public static extern void delete_Layer(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_Extend")]
+  public static extern void Layer_Extend(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_GetData")]
   public static extern System.IntPtr Layer_GetData(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -252,8 +258,17 @@ public class PSDParserPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_GetName")]
   public static extern System.IntPtr Layer_GetName(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_new_Layer")]
-  public static extern global::System.IntPtr new_Layer();
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_ObjectType_set")]
+  public static extern void Layer_ObjectType_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_ObjectType_get")]
+  public static extern int Layer_ObjectType_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_AdditionalObjectType_set")]
+  public static extern void Layer_AdditionalObjectType_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Layer_AdditionalObjectType_get")]
+  public static extern int Layer_AdditionalObjectType_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_new_Document")]
   public static extern global::System.IntPtr new_Document();

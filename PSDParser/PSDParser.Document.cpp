@@ -5,6 +5,9 @@
 #include <Windows.h>
 #endif
 
+#include <map>
+#include <regex>
+
 namespace PSDParser
 {
 	static int32_t Utf8ToUtf16(std::vector<int16_t> &dst, const int8_t* src)
@@ -55,11 +58,7 @@ namespace PSDParser
 	static void ParseDocument(psd_document_t* document, int32_t depth, std::basic_string<uchar>& name, Rect& rect, std::vector<uint8_t>& data)
 	{
 		{
-#if  _WIN32
-			name = L"Background(All)";
-#else
 			name = u"Background(All)";
-#endif
 		}
 
 		{
@@ -170,6 +169,44 @@ namespace PSDParser
 		}
 	}
 
+	void ParseName(const std::u16string& src, std::u16string& name, LayerObjectType& objectType, LayerAdditionalObjectType& detailedType)
+	{
+		name = src;
+		objectType = LayerObjectType::Image;
+		detailedType = LayerAdditionalObjectType::Normal;
+		
+		auto atpos = name.find(u'@');
+		std::u16string attribute;
+
+		if (atpos != std::string::npos)
+		{
+			name = src.substr(0, atpos);
+			attribute = src.substr(atpos + 1, src.size() - atpos + 1);
+		}
+		else
+		{
+			return;
+		}
+
+		if (attribute == u"Button[Normal]" || attribute == u"Button")
+		{
+			objectType = LayerObjectType::Button;
+			detailedType = LayerAdditionalObjectType::Normal;
+		}
+
+		if (attribute == u"Button[Hovered]")
+		{
+			objectType = LayerObjectType::Button;
+			detailedType = LayerAdditionalObjectType::Hovered;
+		}
+
+		if (attribute == u"Button[Pressed]")
+		{
+			objectType = LayerObjectType::Button;
+			detailedType = LayerAdditionalObjectType::Pressed;
+		}
+	}
+
 	Document::Document()
 	{
 
@@ -207,7 +244,15 @@ namespace PSDParser
 
 			ParseLayer(nativeLayer, colorDepth, name, rect, data);
 
-			auto layer = std::make_shared<Layer>(data.data(), rect, name);
+			std::u16string name_;
+			LayerObjectType objectType;
+			LayerAdditionalObjectType detailedType;
+			ParseName(name, name_, objectType, detailedType);
+
+			auto layer = std::make_shared<Layer>(data.data(), rect, name_);
+			layer->ObjectType = objectType;
+			layer->AdditionalObjectType = detailedType;
+
 			layers[i] = layer;
 		}
 
@@ -221,7 +266,14 @@ namespace PSDParser
 
 			ParseDocument(document, colorDepth, name, rect, data);
 
-			auto layer = std::make_shared<Layer>(data.data(), rect, name);
+			std::u16string name_;
+			LayerObjectType objectType;
+			LayerAdditionalObjectType detailedType;
+			ParseName(name, name_, objectType, detailedType);
+
+			auto layer = std::make_shared<Layer>(data.data(), rect, name_);
+			layer->ObjectType = objectType;
+			layer->AdditionalObjectType = detailedType;
 
 			layers.push_back(layer);
 		}
@@ -237,6 +289,41 @@ namespace PSDParser
 			psdBufferDestroy(buffer);
 		}
 		buffer = nullptr;
+
+		if (colorDepth != 8) return true;
+
+		// データを加工する(8bit限定)
+
+		// ボタン処理
+		// サイズを等しくする
+		std::map < std::u16string, std::vector<std::shared_ptr<Layer>>> buttons;
+		for (auto layer : layers)
+		{
+			if (layer->ObjectType != LayerObjectType::Button) continue;
+			buttons[layer->GetName()].push_back(layer);
+		}
+
+		for (auto button : buttons)
+		{
+			Rect r;
+			r.Left = INT_MAX;
+			r.Right = INT_MIN;
+			r.Top = INT_MAX;
+			r.Bottom = INT_MIN;
+
+			for (auto layer : button.second)
+			{
+				if (layer->GetRect().Top < r.Top) r.Top = layer->GetRect().Top;
+				if (layer->GetRect().Bottom > r.Bottom) r.Bottom = layer->GetRect().Bottom;
+				if (layer->GetRect().Left < r.Left) r.Left = layer->GetRect().Left;
+				if (layer->GetRect().Right > r.Right) r.Right = layer->GetRect().Right;
+			}
+
+			for (auto layer : button.second)
+			{
+				layer->Extend(r);
+			}
+		}
 
 		return true;
 	}

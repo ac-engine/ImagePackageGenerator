@@ -300,11 +300,7 @@ SWIGEXPORT void SWIGSTDCALL SWIGRegisterStringCallback_PSDParser(SWIG_CSharpStri
 
 namespace PSDParser
 {
-#ifdef _WIN32
-typedef wchar_t uchar;
-#else 
 typedef char16_t uchar;
-#endif
 };
 
 typedef void * (SWIGSTDCALL* SWIG_CSharpWStringHelperCallback)(const ::PSDParser::uchar *);
@@ -445,6 +441,18 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_Rect(void * jarg1) {
 }
 
 
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_Layer() {
+  void * jresult ;
+  PSDParser::Layer *result = 0 ;
+  
+  result = (PSDParser::Layer *)new PSDParser::Layer();
+  
+  jresult = result ? new std::shared_ptr<  PSDParser::Layer >(result SWIG_NO_NULL_DELETER_1) : 0;
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void SWIGSTDCALL CSharp_delete_Layer(void * jarg1) {
   PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
   std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
@@ -453,6 +461,25 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_Layer(void * jarg1) {
   smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
   arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
   (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Layer_Extend(void * jarg1, void * jarg2) {
+  PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
+  PSDParser::Rect arg2 ;
+  std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
+  PSDParser::Rect *argp2 ;
+  
+  
+  smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
+  arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
+  argp2 = (PSDParser::Rect *)jarg2; 
+  if (!argp2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null PSDParser::Rect", 0);
+    return ;
+  }
+  arg2 = *argp2; 
+  (arg1)->Extend(arg2);
 }
 
 
@@ -503,14 +530,58 @@ SWIGEXPORT ::PSDParser::uchar * SWIGSTDCALL CSharp_Layer_GetName(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_Layer() {
-  void * jresult ;
-  PSDParser::Layer *result = 0 ;
+SWIGEXPORT void SWIGSTDCALL CSharp_Layer_ObjectType_set(void * jarg1, int jarg2) {
+  PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
+  PSDParser::LayerObjectType arg2 ;
+  std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
   
-  result = (PSDParser::Layer *)new PSDParser::Layer();
   
-  jresult = result ? new std::shared_ptr<  PSDParser::Layer >(result SWIG_NO_NULL_DELETER_1) : 0;
+  smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
+  arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = (PSDParser::LayerObjectType)jarg2; 
+  if (arg1) (arg1)->ObjectType = arg2;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_Layer_ObjectType_get(void * jarg1) {
+  int jresult ;
+  PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
+  std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
+  PSDParser::LayerObjectType result;
   
+  
+  smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
+  arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (PSDParser::LayerObjectType) ((arg1)->ObjectType);
+  jresult = (int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Layer_AdditionalObjectType_set(void * jarg1, int jarg2) {
+  PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
+  PSDParser::LayerAdditionalObjectType arg2 ;
+  std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
+  
+  
+  smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
+  arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = (PSDParser::LayerAdditionalObjectType)jarg2; 
+  if (arg1) (arg1)->AdditionalObjectType = arg2;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_Layer_AdditionalObjectType_get(void * jarg1) {
+  int jresult ;
+  PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
+  std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
+  PSDParser::LayerAdditionalObjectType result;
+  
+  
+  smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
+  arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (PSDParser::LayerAdditionalObjectType) ((arg1)->AdditionalObjectType);
+  jresult = (int)result; 
   return jresult;
 }
 

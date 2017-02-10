@@ -54,12 +54,6 @@ unsafe partial class Layer : global::System.IDisposable {
     return ret;
   }
 
-  public uint GetSrtideLength() {
-    uint ret = PSDParserPINVOKE.Layer_GetSrtideLength(swigCPtr);
-    if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public Layer() : this(PSDParserPINVOKE.new_Layer(), true) {
   }
 

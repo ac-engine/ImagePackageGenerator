@@ -503,21 +503,6 @@ SWIGEXPORT ::PSDParser::uchar * SWIGSTDCALL CSharp_Layer_GetName(void * jarg1) {
 }
 
 
-SWIGEXPORT unsigned long SWIGSTDCALL CSharp_Layer_GetSrtideLength(void * jarg1) {
-  unsigned long jresult ;
-  PSDParser::Layer *arg1 = (PSDParser::Layer *) 0 ;
-  std::shared_ptr< PSDParser::Layer > *smartarg1 = 0 ;
-  size_t result;
-  
-  
-  smartarg1 = (std::shared_ptr<  PSDParser::Layer > *)jarg1;
-  arg1 = (PSDParser::Layer *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (arg1)->GetSrtideLength();
-  jresult = (unsigned long)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_Layer() {
   void * jresult ;
   PSDParser::Layer *result = 0 ;
@@ -563,7 +548,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Document_Create(void * jarg1, int jarg2) {
     arg1 = jarg1; 
   }
   arg2 = (int32_t)jarg2; 
-  result = PSDParser::Document::Create(arg1,arg2);
+  result = PSDParser::Document::Create((void const *)arg1,arg2);
   jresult = result ? new std::shared_ptr< PSDParser::Document >(result) : 0; 
   return jresult;
 }

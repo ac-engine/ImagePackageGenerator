@@ -27,8 +27,7 @@ int main()
 
 		auto name = layer->GetName();
 		auto rect = layer->GetRect();
-		auto srtideLength = layer->GetSrtideLength();
-
+		
 		std::vector<uint8_t> bmp;
 		auto height = rect.Bottom - rect.Top;
 		auto width = rect.Right - rect.Left;
@@ -40,10 +39,10 @@ int main()
 			{
 				auto p = (uint8_t*) layer->GetData();
 
-				bmp[(x + y * width) * 4 + 0] = p[x * 4 + srtideLength * y + 0];
-				bmp[(x + y * width) * 4 + 1] = p[x * 4 + srtideLength * y + 1];
-				bmp[(x + y * width) * 4 + 2] = p[x * 4 + srtideLength * y + 2];
-				bmp[(x + y * width) * 4 + 3] = p[x * 4 + srtideLength * y + 3];
+				bmp[(x + y * width) * 4 + 0] = p[x * 4 + width * y + 0];
+				bmp[(x + y * width) * 4 + 1] = p[x * 4 + width * y + 1];
+				bmp[(x + y * width) * 4 + 2] = p[x * 4 + width * y + 2];
+				bmp[(x + y * width) * 4 + 3] = p[x * 4 + width * y + 3];
 
 			}
 		}

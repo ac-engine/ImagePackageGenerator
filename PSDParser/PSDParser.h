@@ -18,67 +18,39 @@ namespace PSDParser
 	class Layer
 		: public std::enable_shared_from_this<Layer>
 	{
-		friend class Document;
-
-		Document*		doc = nullptr;
-		psd_layer_t*	layer = nullptr;
-		psd_document_t* document = nullptr;
-
 		std::basic_string<uchar>	name;
+		std::vector<uint8_t>		data;
+		Rect						area;
 
 	public:
 
 #if !SWIG
-		Layer(Document* doc, psd_layer_t* layer);
+		Layer(const uint8_t* data, Rect area, std::basic_string<uchar> name)
+		{
+			auto width = area.Right - area.Left;
+			auto height = area.Bottom - area.Top;
 
-		Layer(Document* doc, psd_document_t* docment);
+			this->data.resize(width * height * 4);
+			memcpy(this->data.data(), data, this->data.size());
+
+			this->area = area;
+			this->name = name;
+		}
 #endif
-
-		virtual ~Layer();
+		Layer() {}
+		virtual ~Layer() {}
 
 		const void* GetData()
 		{
-			if (layer != nullptr)
-			{
-				return psdLayerGetPixelData(layer);
-			}
-			else
-			{
-				return psdImageGetPixelData(psdDocumentGetImage(document));
-			}
+			return data.data();
 		}
 
 		Rect GetRect()
 		{
-			if (layer != nullptr)
-			{
-				auto rect = psdLayerGetRect(layer);
-				Rect r;
-				r.Top = rect.top;
-				r.Bottom = rect.bottom;
-				r.Left = rect.left;
-				r.Right = rect.right;
-
-				return r;
-			}
-			else
-			{
-				const psd_header_t *header = psdDocumentGetHeader(document);
-				psd_size_t size = psdHeaderGetSize(header);
-
-				Rect r;
-				r.Top = 0;
-				r.Bottom = size.rows;
-				r.Left = 0;
-				r.Right = size.columns;
-
-				return r;
-			}
+			return area;
 		}
 
 		const uchar* GetName() const { return name.c_str(); }
-
-		size_t GetSrtideLength();
 	};
 
 	class Document
@@ -86,35 +58,8 @@ namespace PSDParser
 	{
 	private:
 
-		class Layers
-		{
-			psd_layer_t *const * layers;
-		public:
-			Layers(psd_layer_t *const * layers)
-				: layers(layers)
-			{
-			}
-
-			virtual ~Layers()
-			{
-				free((void*) layers);
-			}
-
-			psd_layer_t *const * GetPointer() { return layers; }
-		};
-
-		std::vector<uint8_t>	data_;
-
-		psd_document_t*	document = nullptr;
-		psd_buffer_t*	buffer = nullptr;
-
-		std::shared_ptr<Layers>		layersNative = nullptr;
-		psd_rsize_t		layerCount = 0;
-
 		std::vector<std::shared_ptr<Layer>>	layers;
-
-		std::shared_ptr<Layer>		backgroundLayer = nullptr;
-
+		int32_t						colorDepth = 0;
 	public:
 
 		Document();

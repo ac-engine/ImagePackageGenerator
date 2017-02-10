@@ -6,6 +6,20 @@ using System.Threading.Tasks;
 
 namespace ImagePackageGenerator
 {
+	enum LayerObjectType
+	{
+		Image,
+		Button
+	}
+
+	enum LayerAdditionalObjectType
+	{
+		None,
+		Normal,
+		Pressed,
+		Hovered
+	}
+
 	struct Rect
 	{
 		public int Top;
@@ -96,13 +110,15 @@ namespace ImagePackageGenerator
 
 		public byte[] Export()
 		{
+			int version = 1;
+
 			List<byte[]> buffer = new List<byte[]>();
 
 			// 識別子
 			buffer.Add(new byte[] { (byte)'a', (byte)'i', (byte)'p', 0 });
 
 			// バージョン
-			buffer.Add(BitConverter.GetBytes(0));
+			buffer.Add(BitConverter.GetBytes(version));
 
 			// レイヤーの個数
 			buffer.Add(BitConverter.GetBytes(layers.Count));
@@ -116,11 +132,21 @@ namespace ImagePackageGenerator
 				buffer.Add(buf);
 				buffer.Add(new byte[] { 0, 0 });
 
-				// 領域
+				// 配置領域
 				buffer.Add(BitConverter.GetBytes(layer.Rect.Left));
 				buffer.Add(BitConverter.GetBytes(layer.Rect.Top));
 				buffer.Add(BitConverter.GetBytes(layer.Rect.Width));
 				buffer.Add(BitConverter.GetBytes(layer.Rect.Height));
+
+				// ソース領域(Version1より追加)
+				buffer.Add(BitConverter.GetBytes(0));
+				buffer.Add(BitConverter.GetBytes(0));
+				buffer.Add(BitConverter.GetBytes(layer.Rect.Width));
+				buffer.Add(BitConverter.GetBytes(layer.Rect.Height));
+
+				// 属性(Version1より追加)
+				buffer.Add(BitConverter.GetBytes((int)layer.ObjectType));
+				buffer.Add(BitConverter.GetBytes((int)layer.AdditionalObjectType));
 
 				// 画素
 				foreach (var c in layer.Pixels)
@@ -173,6 +199,10 @@ namespace ImagePackageGenerator
 				Rect_.Right = rect.Right;
 				Rect = Rect_;
 
+				ObjectType = (LayerObjectType)layer.ObjectType;
+
+				AdditionalObjectType = (LayerAdditionalObjectType)layer.AdditionalObjectType;
+
 				Pixels = new Color[Rect.Width * Rect.Height];
 
 				fixed(Color* p_ = Pixels)
@@ -201,6 +231,10 @@ namespace ImagePackageGenerator
 			public string Name { get; private set; }
 
 			public Rect Rect { get; private set; }
+
+			public LayerObjectType ObjectType { get; private set; }
+
+			public LayerAdditionalObjectType AdditionalObjectType { get; private set; }
 
 			public Color[] Pixels { get; private set; }
 		}

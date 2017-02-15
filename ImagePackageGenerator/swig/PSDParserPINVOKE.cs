@@ -285,6 +285,9 @@ public class PSDParserPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Document_GetLayer")]
   public static extern global::System.IntPtr Document_GetLayer(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
+  [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Document_GetWidth")]
+  public static extern int Document_GetWidth(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("PSDParser", EntryPoint="CSharp_Document_GetDepth")]
   public static extern uint Document_GetDepth(global::System.Runtime.InteropServices.HandleRef jarg1);
 }

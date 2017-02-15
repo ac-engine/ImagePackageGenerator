@@ -62,6 +62,12 @@ unsafe partial class Document : global::System.IDisposable {
     return ret;
   }
 
+  public int GetWidth() {
+    int ret = PSDParserPINVOKE.Document_GetWidth(swigCPtr);
+    if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public uint GetDepth() {
     uint ret = PSDParserPINVOKE.Document_GetDepth(swigCPtr);
     if (PSDParserPINVOKE.SWIGPendingException.Pending) throw PSDParserPINVOKE.SWIGPendingException.Retrieve();

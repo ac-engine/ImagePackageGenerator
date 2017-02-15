@@ -657,6 +657,21 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Document_GetLayer(void * jarg1, int jarg2) 
 }
 
 
+SWIGEXPORT int SWIGSTDCALL CSharp_Document_GetWidth(void * jarg1) {
+  int jresult ;
+  PSDParser::Document *arg1 = (PSDParser::Document *) 0 ;
+  std::shared_ptr< PSDParser::Document const > *smartarg1 = 0 ;
+  int32_t result;
+  
+  
+  smartarg1 = (std::shared_ptr< const PSDParser::Document > *)jarg1;
+  arg1 = (PSDParser::Document *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (int32_t)((PSDParser::Document const *)arg1)->GetWidth();
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT unsigned long SWIGSTDCALL CSharp_Document_GetDepth(void * jarg1) {
   unsigned long jresult ;
   PSDParser::Document *arg1 = (PSDParser::Document *) 0 ;

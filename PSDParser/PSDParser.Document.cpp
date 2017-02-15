@@ -227,6 +227,9 @@ namespace PSDParser
 		psdDocumentParse(document, buffer);
 		psdDocumentExtractImage(document);
 
+		auto docSize = psdHeaderGetSize(psdDocumentGetHeader(document));
+		docWidth = docSize.columns;
+		docHeight = docSize.rows;
 		colorDepth = psdHeaderGetDepth(psdDocumentGetHeader(document));
 
 		psd_rsize_t layerCount = 0;
@@ -350,6 +353,11 @@ namespace PSDParser
 		if (index < 0) return nullptr;
 		if (index >= GetLayerCount()) return nullptr;
 		return layers[index];
+	}
+
+	int32_t Document::GetWidth() const
+	{
+		return docWidth;
 	}
 
 	size_t Document::GetDepth()

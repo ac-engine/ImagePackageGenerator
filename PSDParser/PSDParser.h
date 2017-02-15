@@ -121,6 +121,9 @@ namespace PSDParser
 
 		std::vector<std::shared_ptr<Layer>>	layers;
 		int32_t						colorDepth = 0;
+		int32_t						docWidth = 0;
+		int32_t						docHeight = 0;
+
 	public:
 
 		Document();
@@ -136,6 +139,8 @@ namespace PSDParser
 		int32_t GetLayerCount();
 
 		std::shared_ptr<Layer> GetLayer(int32_t index);
+
+		int32_t GetWidth() const;
 
 		size_t GetDepth();
 

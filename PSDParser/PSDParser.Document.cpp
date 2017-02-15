@@ -360,6 +360,11 @@ namespace PSDParser
 		return docWidth;
 	}
 
+	int32_t Document::GetHeight() const
+	{
+		return docHeight;
+	}
+
 	size_t Document::GetDepth()
 	{
 		return colorDepth;

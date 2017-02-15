@@ -142,6 +142,8 @@ namespace PSDParser
 
 		int32_t GetWidth() const;
 
+		int32_t GetHeight() const;
+
 		size_t GetDepth();
 
 	};

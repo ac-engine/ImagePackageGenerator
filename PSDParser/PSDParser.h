@@ -35,11 +35,13 @@ namespace PSDParser
 		std::basic_string<uchar>	name;
 		std::vector<uint8_t>		data;
 		Rect						area;
+		bool						isFolderBegin;
+		bool						isFolderEnd;
 
 	public:
 
 #if !SWIG
-		Layer(const uint8_t* data, Rect area, std::basic_string<uchar> name)
+		Layer(const uint8_t* data, Rect area, bool isFolderBegin, bool isFolderEnd, std::basic_string<uchar> name)
 		{
 			auto width = area.Right - area.Left;
 			auto height = area.Bottom - area.Top;
@@ -49,6 +51,9 @@ namespace PSDParser
 
 			this->area = area;
 			this->name = name;
+
+			this->isFolderBegin = isFolderBegin;
+			this->isFolderEnd = isFolderEnd;
 		}
 #endif
 		Layer() {}
@@ -106,6 +111,10 @@ namespace PSDParser
 		{
 			return area;
 		}
+
+		bool IsFolderBegin() const { return isFolderBegin; }
+
+		bool IsFolderEnd() const { return isFolderEnd; }
 
 		const uchar* GetName() const { return name.c_str(); }
 

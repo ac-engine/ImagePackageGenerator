@@ -102,8 +102,18 @@ namespace PSDParser
 			auto uname = psdLayerGetName(layer);
 			auto lname = psdLayerGetPascalName(layer);
 
+			int32_t ulength = 0;
+			for (int32_t i = 0; i < 260; i += 2)
+			{
+				if (uname[i + 0] == 0 && uname[i + 1] == 0)
+				{
+					ulength = i / 2;
+					break;
+				}
+			}
+
 			std::vector<int16_t> buf;
-			if (strlen(uname) > 0)
+			if (ulength > 0)
 			{
 				for (int32_t i = 0;;)
 				{
@@ -252,7 +262,7 @@ namespace PSDParser
 			LayerAdditionalObjectType detailedType;
 			ParseName(name, name_, objectType, detailedType);
 
-			auto layer = std::make_shared<Layer>(data.data(), rect, name_);
+			auto layer = std::make_shared<Layer>(data.data(), rect, psdLayerIsFolderBegin(nativeLayer), psdLayerIsFolderEnd(nativeLayer), name_);
 			layer->ObjectType = objectType;
 			layer->AdditionalObjectType = detailedType;
 
@@ -274,7 +284,7 @@ namespace PSDParser
 			LayerAdditionalObjectType detailedType;
 			ParseName(name, name_, objectType, detailedType);
 
-			auto layer = std::make_shared<Layer>(data.data(), rect, name_);
+			auto layer = std::make_shared<Layer>(data.data(), rect, false, false, name_);
 			layer->ObjectType = objectType;
 			layer->AdditionalObjectType = detailedType;
 

@@ -1,6 +1,8 @@
 #include "./psd.h"
 #include "./psd_p.h"
 
+#include <stdio.h>
+
 void
 psdGlobalSetCustomAllocator(const psd_global_allocator_t *allocator)
 {
@@ -1945,4 +1947,43 @@ psdDocumentDestroy(psd_document_t *document)
         }
         psd_free(document);
     }
+}
+
+psd_bool_t
+psdLayerIsText(const psd_layer_t *layer)
+{
+	const psd_layer_info_t *layer_info;
+	layer_info = psdLayerInfoFind(layer, PSD_LAYER_INFO_TYPE_TOOL);
+	if (psd_is_not_null(layer_info)) {
+		return psd_true;
+	}
+	return psd_false;
+}
+
+const char *
+psdLayerTextGetText(const psd_layer_t *layer)
+{
+	const psd_layer_info_t *layer_info;
+	psd_rsize_t length;
+	psd_descriptor_value_t** values = NULL;
+	char* ret = NULL;
+
+	layer_info = psdLayerInfoFind(layer, PSD_LAYER_INFO_TYPE_TOOL);
+	if (psd_is_not_null(layer_info)) {
+		values = psdDescriptorGetValues(layer_info->u.type_tool, &length);
+
+		for (int i = 0; i < length; i++)
+		{
+			psd_descriptor_value_t* value = (values[i]);
+			
+			if (strcmp(value->id, "Txt ") == 0)
+			{
+				ret = psdDescriptorValueGetUnicodeText(value);
+			}
+		}
+
+		psd_free(values);
+		return ret;
+	}
+	return NULL;
 }

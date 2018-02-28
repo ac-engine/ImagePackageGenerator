@@ -32,12 +32,14 @@ namespace PSDParser
 	class Layer
 		: public std::enable_shared_from_this<Layer>
 	{
+		friend class Document;
+
 		std::basic_string<uchar>	name;
 		std::vector<uint8_t>		data;
 		Rect						area;
 		bool						isFolderBegin;
 		bool						isFolderEnd;
-
+		std::basic_string<uchar>	text;
 	public:
 
 #if !SWIG

@@ -753,6 +753,11 @@ psdDocumentExtractImage(psd_document_t *document);
 PSD_DECL_API void PSD_API_ENTRY
 psdDocumentDestroy(psd_document_t *document);
 
+PSD_DECL_API psd_bool_t PSD_API_ENTRY
+psdLayerIsText(const psd_layer_t *layer);
+PSD_DECL_API const char * PSD_API_ENTRY
+psdLayerTextGetText(const psd_layer_t *layer);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

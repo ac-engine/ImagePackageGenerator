@@ -263,6 +263,43 @@ namespace PSDParser
 			ParseName(name, name_, objectType, detailedType);
 
 			auto layer = std::make_shared<Layer>(data.data(), rect, psdLayerIsFolderBegin(nativeLayer), psdLayerIsFolderEnd(nativeLayer), name_);
+
+			if (psdLayerIsText(nativeLayer))
+			{
+				auto txt = psdLayerTextGetText(nativeLayer);
+				
+				int32_t ulength = 0;
+				for (int32_t i = 0; i < 260; i += 2)
+				{
+					if (txt[i + 0] == 0 && txt[i + 1] == 0)
+					{
+						ulength = i / 2;
+						break;
+					}
+				}
+
+				std::vector<int16_t> buf;
+				if (ulength > 0)
+				{
+					for (int32_t i = 0;;)
+					{
+						char v[2];
+						v[1] = txt[i + 0];
+						v[0] = txt[i + 1];
+
+						uchar c;
+						memcpy(&c, v, 2);
+						buf.push_back(c);
+
+						if (c == 0) break;
+						i += 2;
+					}
+				}
+
+				
+				layer->text = (char16_t*)buf.data();
+			}
+
 			layer->ObjectType = objectType;
 			layer->AdditionalObjectType = detailedType;
 

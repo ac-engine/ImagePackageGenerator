@@ -24,7 +24,43 @@ namespace ImagePackageGenerator
 			application.Run();
 			*/
 
-			System.Windows.Forms.Application.Run(new Window());
+			//System.Windows.Forms.Application.Run(new Window());
+
+			var options = new asd.EngineOption();
+			options.IsWindowResizable = true;
+
+			asd.Engine.Initialize("ImagePackageGenerator", 960, 540, options);
+
+			asd.Engine.OpenTool();
+
+			// Font
+			TryLoadFont(
+				new[] {
+					"C:\\Windows\\Fonts\\meiryo.ttc",
+					"/Library/Fonts/ヒラギノ丸ゴ Pro W4.otf",
+					"/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc",
+					"/System/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc",
+				}
+				);
+
+			var scene = new ToolScene();
+			asd.Engine.ChangeScene(scene);
+			while(asd.Engine.DoEvents())
+			{
+				asd.Engine.Update();
+			}
+
+			asd.Engine.Terminate();
+		}
+
+		static void TryLoadFont(string[] fonts)
+		{
+			foreach(var font in fonts)
+			{
+				if (!System.IO.File.Exists(font)) continue;
+				asd.Engine.Tool.AddFontFromFileTTF(font, 14);
+				break;
+			}
 		}
 
 		static void application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

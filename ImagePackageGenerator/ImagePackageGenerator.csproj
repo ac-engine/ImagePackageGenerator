@@ -36,6 +36,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Altseed">
+      <HintPath>.\Altseed.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -62,6 +65,7 @@
     <Compile Include="swig\PSDParser.cs" />
     <Compile Include="swig\PSDParserPINVOKE.cs" />
     <Compile Include="swig\Rect.cs" />
+    <Compile Include="ToolScene.cs" />
     <Compile Include="Window.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -169,12 +169,12 @@ namespace ImagePackageGenerator
 
 			if (ec == ErrorCode.DepthIs16)
 			{
-				//System.Windows.Forms.MessageBox.Show("8bit画像のみサポートしています。\npsdファイルのチャンネルを確認するようお願いします。");
+				asd.Engine.Tool.ShowDialog("8bit画像のみサポートしています。\npsdファイルのチャンネルを確認するようお願いします。", "Info", asd.ToolDialogStyle.Info, asd.ToolDialogButtons.OK);
 				return;
 			}
 			else if (ec != ErrorCode.Succeed)
 			{
-				//System.Windows.Forms.MessageBox.Show("読込に失敗しました。");
+				asd.Engine.Tool.ShowDialog("読込に失敗しました。", "Info", asd.ToolDialogStyle.Error, asd.ToolDialogButtons.OK);
 				return;
 			}
 
